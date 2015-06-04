@@ -1,0 +1,337 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Homework#8 | Weather Forecast</title>	
+	<link rel="stylesheet" href="http://yui.yahooapis.com/3.13.0/build/cssbutton/cssbutton.css">
+	<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/fonts/fonts-min.css"> 
+	<script src="http://yui.yahooapis.com/2.9.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script src="http://yui.yahooapis.com/2.9.0/build/element/element-min.js"></script>
+	<script src="http://yui.yahooapis.com/2.9.0/build/button/button-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="weather.css">
+	<script src="xmlToJson.js"></script>
+ </head>
+ <!--
+<BODY>
+This is for USC disclaimer
+<div style="display: block; font-family: Verdana, Geneva, Arial; font-size: 10px">
+The University of Southern California does not screen or control the content on this website and thus does not guarantee the accuracy, integrity, or quality of such content.  All content on this website is provided by and is the sole responsibility of the person from which such content originated, and such content does not necessarily reflect the opinions of the University administration or the Board of Trustees
+</div>
+</BODY>
+-->
+<body >
+
+<div id="fb-root"></div>
+<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
+<script type="text/javascript">
+		var APP_ID = "456965504424401";
+		var logText = "";
+		var debug = false;
+		FB.init(
+		{
+			appId:APP_ID, cookie:true,status:true, xfbml:true, oauth : true
+		}); 
+
+function facebookPost()
+{
+ 	if(document.getElementById('r1').checked)
+	{
+		currentweather();
+	}
+	else if(document.getElementById('r2').checked)
+	{
+		weatherforcast();
+	}
+}
+function currentweather()
+{
+	var weatherProperties = {
+    "Look at details":
+	{
+        "text": "here",
+        "href": myString.weather.link
+    }
+};
+	FB.ui(
+	{
+		method: 'feed',
+		name: myString.weather.location.city+','+myString.weather.location.region+','+myString.weather.location.country,
+		caption: 'The current condition for '+myString.weather.location.city+' is '+ myString.weather.condition.text,
+		description: (
+					' Temperature is  '+myString.weather.condition.temp+'&deg;'+myString.weather.units.temperature
+					),
+		link: myString.weather.feed.replace("AND","&"),
+		properties: weatherProperties,
+		picture: myString.weather.img
+	},
+	function(response) 
+	{
+		if (response && response.post_id)
+		{
+			alert('Post was published.');
+		}
+		else 
+		{
+			alert('Post was not published.');
+		}
+	}
+	);
+}
+
+function weatherforcast()
+{
+	var forecast = myString.weather.forecast;
+	var str='';
+	for (i in forecast)
+	{
+	   str = str+ forecast[i].day+': '+forecast[i].text+', '+forecast[i].high +'/'+forecast[i].low+ "; ";
+	}
+
+ var weatherProperties = {
+    "Look at details":
+	{
+        "text": "here",
+        "href": myString.weather.link
+    }
+};
+	FB.ui(
+	{
+		method: 'feed',
+		name: myString.weather.location.city+','+myString.weather.location.region+','+myString.weather.location.country,
+		caption: 'Weather forecast for '+myString.weather.location.city,
+		description: (
+						str
+					),
+		link: myString.weather.feed,
+		properties: weatherProperties,
+		picture: "http://www-scf.usc.edu/~csci571/2013Fall/hw8/weather.jpg"
+	},
+	function(response)
+	{
+		if (response && response.post_id)
+		{
+			alert('Post was published.');
+		}
+		else 
+		{
+			alert('Post was not published.');
+		}
+	}
+	);
+}
+
+</script>
+
+<form style="margin-left:200px;margin-top:75px" name="form" id="form"  class="yui3-skin-sam" > 
+   
+     <span style="font-size: 20px;color:#FFF;"> Location : </span><input type="text" name="zip" id="zip" placeholder="Enter city or zip code" size="50px"> 
+     <input type="button" class="yui3-button" id="search-Button" value="Search" onClick="validateForm()">
+     <input type="hidden" id="ht" value="f">
+</form> 
+	 
+   <br><br>
+	 <div id="city"></div><br> 
+	 <div id="region"></div>
+
+	<table style="margin-top:50px;margin-left:150px" cellspacing="70px"  class="yui3-skin-sam" >
+     	<tr>
+        <td>
+	 <div id="image"></div>
+	 <div id="tempchange"></div>
+	 <div id="temp"></div>
+   		</td>
+        <td>
+         <div>
+          <div id="forecast" style="visibility:hidden;float:left;color:white;font-size:16px;font-weight:bold">Forecast</div><br >
+    	 <div id="weathertable" style="float:left"></div>
+      </div>
+	</td>
+    <td align="center">
+	  <div id="facebook" style="visibility:hidden" style="float:right">
+	   	<input type="radio" id="r1" name ="postWeather" checked/> <span style="color:white;font-size:16px">Post Current Weather</span>
+        <br>
+	   &nbsp;&nbsp;<input type="radio" id="r2" name ="postWeather"/><span style="color:white;font-size:16px"> Post Weather Forecast</span>
+        <br><br>
+		<a href="#" onClick="facebookPost()">
+      	  <img src="fb.jpg" alt="post to facebook" width="75" height="25" border="0" >
+		</a>
+        
+ 	</div>
+      </td>
+    	</tr>
+     </table>
+	 <div id="yahoo" style="color:#FFF">
+		<p>View Full Details on</p>
+		<a href="http://weather.yahoo.com/">
+      	  <img src="yahoonews.jpg" alt="yahoo weather">
+        </a>
+</body>
+ 
+
+<script>
+	myString ='';
+ 
+ function validateForm()
+{
+	var x=document.form.zip.value;
+	var y = /^\d{5}$/;
+	var re = /([^,]+),\s*(\w{2})/;
+
+	if(x==null || x=="")
+	{
+		alert("Please enter in the search box!!");
+		return false;
+	}
+	
+	else if (x.search(y) == -1 && !(isNaN(x)))
+	{
+		alert("Invalid ZipCode: must be five digits \n Example:90089");
+		return false;
+	}
+	else if(x.search(re)==-1 && (isNaN(x)))
+	{
+		alert("Invalid location: must include state or country separated by comma . \nExample : Los Angeles, CA");
+		return false;
+	}
+	else
+	{
+		validator();
+	} 
+}
+	
+ 
+function validator()
+{
+	var temperatureType = document.getElementById('ht').value;
+  	weather = document.getElementById('zip').value;
+	var locationType;
+	var reg = /^\d{5}$/;
+  	 	if (! reg.test(weather) ) 
+		{
+ 		   locationType ="City";
+ 		}
+		 else
+		{
+ 			locationType="Zip";
+		}
+ 
+  		if (window.XMLHttpRequest)
+		{
+			try 
+			{
+				req = new XMLHttpRequest();
+			}
+			catch (e) 
+			{
+				req = false;
+			}
+		}
+		else if (window.ActiveXObject)
+		{
+			try 
+			{
+				req = new ActiveXObject("Msxml2.XMLHTTP");
+			}
+			catch (e)
+			{
+				try 
+				{
+					req = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				catch (e)
+				{
+					req = false;
+				}
+			}
+		}
+		if (req)
+		{
+			req.onreadystatechange = WeatherReport;
+ 			var location = weather;
+			//uri = "http://cs-server.usc.edu:20001/examples/servlet/gmathur_servlet?location="+location+"&type="+locationType+"&u="+temperatureType;
+			 //alert(uri);
+			uri = "http://fbdemo.uphero.com/weather/index.php?weather="+weather+"&locationType="+locationType+"&temperatureType="+temperatureType;
+			req.open("GET", uri, true);
+ 			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+			req.send("");
+		} 
+		else
+		{
+				alert("Please enable Javascript");
+		}
+}
+		
+function WeatherReport()
+{
+	if (req.readyState == 4 && req.status == 200)
+	{
+		document.getElementById('zip').value=weather;
+		var a = req.responseText;
+
+		//alert(a);
+		if(a==="")
+		{
+			document.getElementById('city').innerHTML = "Weather information cannot be found!!";
+			document.getElementById('region').innerHTML='';
+			document.getElementById('image').innerHTML='';
+			document.getElementById('tempchange').innerHTML='';
+			document.getElementById('temp').innerHTML='';
+			document.getElementById('facebook').style.visibility='hidden'
+	 		document.getElementById('forecast').style.visibility='hidden';
+			document.getElementById('weathertable').innerHTML='';
+ 		}
+		else
+		{
+			doc = xml2json(parseXml(a, "  "))
+			 myString = doc.replace("undefined", "");
+			 //alert(doc);
+    		myString = eval("(" + myString + ")");
+			var feed_str = myString.weather.feed.replace("AND",'&');
+			document.getElementById('weathertable').innerHTML="";
+			document.getElementById('city').innerHTML=myString.weather.location.city;
+			document.getElementById('region').innerHTML=myString.weather.location.region+','+myString.weather.location.country;
+			document.getElementById('image').innerHTML="<table><tr><td><a href='"+feed_str+"' target='_blank'> <img src='"+myString.weather.img+"' alt='"+myString.weather.condition.text+"' title='"+myString.weather.condition.text+"' /></a></td>"+"<td><span style='color:#FFF;font-size:16px'>"+myString.weather.condition.text+"</span></td></tr></table>";
+			document.getElementById('tempchange').innerHTML="&uarr;" +myString.weather.forecast[0].high +"&deg;"+ myString.weather.units.temperature+"&nbsp;&nbsp;&nbsp;  &darr;"+myString.weather.forecast[0].low+"&deg;"+ myString.weather.units.temperature;
+			document.getElementById('temp').innerHTML=myString.weather.condition.temp+"<sup><span style='color:#FFF;font-size:36px'>&deg;</span><a onclick='changetemp()' href='#'  style='color:#FFF;font-size:36px'>"+myString.weather.units.temperature+"</a></sup>";
+			document.getElementById('facebook').style.visibility='visible';
+			document.getElementById('forecast').style.visibility='visible';
+
+			YUI().use('datatable', function (Y) 
+			{
+				var data = myString.weather.forecast;
+				for ( i=0;i < data.length ; i++)
+				{
+					data[i].high = data[i].high+"°";
+					data[i].low = data[i].low+"°";
+				}
+				var table = new Y.DataTable({
+				columns: [  {key:"day", label:"Day" , className:'datatable-header weathertable'},
+							{key:"text", label:"Weather", className:'datatable-header weathertable'},
+							{key:"high", label:"High" , className:'datatable-header d2'},
+							{key:"low", label:"Low" , className:'datatable-header d3'}
+						],
+				data: data,
+						});
+				table.render("#weathertable");
+ 
+			});
+		}
+	}
+ }	
+ 
+function changetemp()
+{
+ 	var value = document.getElementById('ht').value;
+	if( value=="f")
+	{
+		document.getElementById('ht').value ="c";
+	}
+	else if( value=="c")
+	{
+		document.getElementById('ht').value ="f";
+	}
+	validateForm();
+}
+		
+</script>
+</html>

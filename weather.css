@@ -1,0 +1,62 @@
+
+.yui3-datatable th.datatable-header
+{ 
+	font-weight:bold;
+}
+
+body 
+{
+	background-image: url('bg.jpg');
+}
+#city
+{
+	font-size:40px;	
+	color:white;
+	margin-left:200px;
+}
+#region
+{
+	font-size:20px;	
+	color:#FFF;
+	margin-left:200px;
+}
+#zip
+{
+	-moz-border-radius: 3px;
+	border-radius: 4px;
+    border:solid 1px black;
+    padding:5px;
+}  
+		
+#temp
+{
+		margin-top:15px;
+		font-size:75px;
+		color:#FFF;
+}
+
+#tempchange
+{
+	color:#FFF;
+	font-size:20px;
+	font-weight:bold;
+}
+	 	td.weathertable {
+		font-weight:bold;
+	}
+ 
+td.d2 {
+ 	    color:#FFA606;
+		font-weight:bold;
+ 	}	 
+td.d3 {
+ 	    color:#1E90FF;
+		font-weight:bold;
+ 	}		
+	
+#yahoo
+{
+     position: fixed;
+     bottom: 0;
+     right: 0;
+}
