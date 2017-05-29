@@ -301,8 +301,8 @@ function WeatherReport()
 				var data = myString.weather.forecast;
 				for ( i=0;i < data.length ; i++)
 				{
-					data[i].high = data[i].high+"°";
-					data[i].low = data[i].low+"°";
+					data[i].high = data[i].high+"Â°";
+					data[i].low = data[i].low+"Â°";
 				}
 				var table = new Y.DataTable({
 				columns: [  {key:"day", label:"Day" , className:'datatable-header weathertable'},
